@@ -1,0 +1,487 @@
+/* CSS Variables - Colores principales */
+:root {
+    --primary-color: #0d6efd;
+    --secondary-color: #6c757d;
+    --success-color: #198754;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #0dcaf0;
+    --light-bg: #f8f9fa;
+    --dark-bg: #212529;
+    --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --border-radius: 10px;
+    --transition: all 0.2s ease-in-out;
+}
+
+/* Global Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f4f8;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Navbar Styles */
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+/* Main Card Container */
+.mainCard {
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-shadow);
+    transition: var(--transition);
+    background: white;
+}
+
+.mainCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Tab Styles */
+.tabHeader {
+    background-color: white;
+    padding: 0;
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+}
+
+.nav-tabs .nav-link {
+    font-weight: 500;
+    color: var(--secondary-color);
+    border: none;
+    padding: 1rem 1.5rem;
+    transition: var(--transition);
+}
+
+.nav-tabs .nav-link:hover {
+    background-color: rgba(13, 110, 253, 0.1);
+    color: var(--primary-color);
+}
+
+.nav-tabs .nav-link.active {
+    color: var(--primary-color);
+    font-weight: 600;
+    background-color: white;
+    border-bottom: 3px solid var(--primary-color);
+}
+
+.tabBody {
+    padding: 2rem;
+}
+
+/* Form Styles */
+.inputGroup {
+    margin-bottom: 1rem;
+}
+
+.inputLabel {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #495057;
+}
+
+.form-control, .form-select {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    padding: 0.75rem;
+    transition: var(--transition);
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* Button Styles */
+.actionBtn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.actionBtn:hover {
+    transform: translateY(-1px);
+}
+
+.deleteBtn {
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+/* Section Titles */
+.sectionTitle {
+    margin-bottom: 1.5rem;
+    color: #212529;
+    font-weight: 600;
+}
+
+/* Card Components */
+.calendarCard, .historyCard, .settingsCard {
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-shadow);
+    background: white;
+    margin-bottom: 1.5rem;
+}
+
+.cardHeader {
+    background-color: var(--light-bg);
+    padding: 1rem 1.5rem;
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    justify-content: between;
+    align-items: center;
+}
+
+.cardTitle {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #212529;
+}
+
+.cardBody {
+    padding: 1.5rem;
+}
+
+.cardFooter {
+    background-color: var(--light-bg);
+    padding: 1rem 1.5rem;
+    border-bottom-left-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+    border-top: 1px solid #dee2e6;
+}
+
+.footerLabel {
+    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+}
+
+.footerValue {
+    margin: 0;
+    font-weight: 600;
+}
+
+/* Report Header */
+.reportHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.exportButtons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Table Styles */
+.tableContainer {
+    overflow-x: auto;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.dataTable {
+    margin-bottom: 0;
+}
+
+.tableHeader {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.tableHeader th {
+    border: none;
+    padding: 1rem 0.75rem;
+    font-weight: 500;
+}
+
+.emptyState {
+    text-align: center;
+    padding: 2rem;
+    color: var(--secondary-color);
+    font-style: italic;
+}
+
+/* Summary Cards */
+.summaryCard {
+    text-align: center;
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 1rem;
+    transition: var(--transition);
+}
+
+.summaryCard:hover {
+    transform: translateY(-2px);
+}
+
+.summaryLabel {
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+    opacity: 0.8;
+    font-weight: 500;
+}
+
+.summaryValue {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+/* Summary Card Colors */
+.totalRevenue {
+    background-color: rgba(13, 110, 253, 0.1);
+    color: var(--primary-color);
+    border: 1px solid rgba(13, 110, 253, 0.2);
+}
+
+.totalCommissions {
+    background-color: rgba(108, 117, 125, 0.1);
+    color: var(--secondary-color);
+    border: 1px solid rgba(108, 117, 125, 0.2);
+}
+
+.netBalance {
+    background-color: rgba(25, 135, 84, 0.1);
+    color: var(--success-color);
+    border: 1px solid rgba(25, 135, 84, 0.2);
+}
+
+/* Calendar Styles */
+#calendarWidget .flatpickr-calendar {
+    margin: 0 auto;
+    box-shadow: none;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+}
+
+/* Badge Styles */
+.priceBadge {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.75rem;
+}
+
+.badge-paid {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.badge-pending {
+    background-color: var(--warning-color);
+    color: #212529;
+}
+
+/* Management Lists */
+.managementList {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.listItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border: 1px solid #dee2e6;
+    transition: var(--transition);
+}
+
+.listItem:hover {
+    background-color: #f8f9fa;
+}
+
+/* Database Controls */
+.databaseControls {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Footer */
+.appFooter {
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+    text-align: center;
+    padding: 2rem 0;
+    margin-top: 2rem;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Notification System */
+.notificationContainer {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    min-width: 300px;
+    max-width: 400px;
+}
+
+.alertFloating {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .tabBody {
+        padding: 1rem;
+    }
+    
+    .reportHeader {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+    
+    .exportButtons {
+        justify-content: stretch;
+    }
+    
+    .exportButtons .actionBtn {
+        flex: 1;
+    }
+    
+    .summaryCard {
+        margin-bottom: 1rem;
+    }
+    
+    .cardHeader {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+    
+    .actionBtn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        padding: 0 0.5rem;
+    }
+    
+    .nav-tabs .nav-link {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .tableContainer {
+        font-size: 0.85rem;
+    }
+    
+    .summaryValue {
+        font-size: 1.5rem;
+    }
+}
+
+/* Loading States */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.spinner {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Form Validation */
+.form-control.is-invalid,
+.form-select.is-invalid {
+    border-color: var(--danger-color);
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+.form-control.is-valid,
+.form-select.is-valid {
+    border-color: var(--success-color);
+    box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.25);
+}
+
+/* Custom Scrollbar */
+.tableContainer::-webkit-scrollbar,
+.managementList::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.tableContainer::-webkit-scrollbar-track,
+.managementList::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.tableContainer::-webkit-scrollbar-thumb,
+.managementList::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.tableContainer::-webkit-scrollbar-thumb:hover,
+.managementList::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* Print Styles */
+@media print {
+    .navbar,
+    .tabHeader,
+    .exportButtons,
+    .actionBtn,
+    .appFooter {
+        display: none !important;
+    }
+    
+    .mainCard {
+        box-shadow: none;
+        border: 1px solid #dee2e6;
+    }
+    
+    .tabBody {
+        padding: 0;
+    }
+    
+    .summaryCard {
+        border: 1px solid #dee2e6;
+        break-inside: avoid;
+    }
+}
+    

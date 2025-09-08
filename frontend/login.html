@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Iniciar Sesión - Sistema de Gestión para Lavadero de Autos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="styles.css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <!-- Header -->
+            <div class="login-header">
+                <div class="car-icon">
+                    <i class="fas fa-car-wash"></i>
+                </div>
+                <h1 class="brand-title">Auto Wash System</h1>
+                <p class="brand-subtitle">Sistema de Gestión para Lavadero</p>
+            </div>
+
+            <!-- Body -->
+            <div class="login-body">
+                <!-- Form Tabs -->
+                <div class="form-tabs">
+                    <button class="tab-btn active" onclick="switchTab('login')">
+                        <i class="fas fa-sign-in-alt me-1"></i>Iniciar Sesión
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('register')">
+                        <i class="fas fa-user-plus me-1"></i>Registrarse
+                    </button>
+                </div>
+
+                <!-- Login Form -->
+                <div id="loginForm" class="form-content active">
+                    <form>
+                        <div class="input-group-custom">
+                            <label class="input-label">Usuario o Email</label>
+                            <input type="text" class="form-control" placeholder="Ingrese su usuario o email" required>
+                        </div>
+
+                        <div class="input-group-custom">
+                            <label class="input-label">Contraseña</label>
+                            <input type="password" class="form-control" placeholder="Ingrese su contraseña" required>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="rememberMe">
+                            <label class="form-check-label" for="rememberMe">
+                                Recordar sesión
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn-primary-custom">
+                            <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
+                        </button>
+
+                        <div class="forgot-link">
+                            <a href="#" onclick="showForgotPassword()">¿Olvidaste tu contraseña?</a>
+                        </div>
+                    </form>
+
+                    <div class="divider">
+                        <span>o continúa con</span>
+                    </div>
+
+                    <div class="social-login">
+                        <a href="#" class="btn-social">
+                            <i class="fab fa-google" style="color: #db4437;"></i>
+                            Google
+                        </a>
+                        <a href="#" class="btn-social">
+                            <i class="fab fa-facebook-f" style="color: #4267B2;"></i>
+                            Facebook
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Register Form -->
+                <div id="registerForm" class="form-content">
+                    <form>
+                        <div class="alert-custom alert-info-custom">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Crea tu cuenta para acceder al sistema de gestión
+                        </div>
+
+                        <div class="input-group-custom">
+                            <label class="input-label">Nombre Completo</label>
+                            <input type="text" class="form-control" placeholder="Ingrese su nombre completo" required>
+                        </div>
+
+                        <div class="input-group-custom">
+                            <label class="input-label">Email</label>
+                            <input type="email" class="form-control" placeholder="correo@ejemplo.com" required>
+                        </div>
+
+                        <div class="input-group-custom">
+                            <label class="input-label">Usuario</label>
+                            <input type="text" class="form-control" placeholder="Nombre de usuario" required>
+                        </div>
+
+                        <div class="input-group-custom">
+                            <label class="input-label">Contraseña</label>
+                            <input type="password" class="form-control" placeholder="Mínimo 8 caracteres" required>
+                        </div>
+
+                        <div class="input-group-custom">
+                            <label class="input-label">Confirmar Contraseña</label>
+                            <input type="password" class="form-control" placeholder="Repita su contraseña" required>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="acceptTerms" required>
+                            <label class="form-check-label" for="acceptTerms">
+                                Acepto los <a href="#" style="color: var(--primary-color);">términos y condiciones</a>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn-primary-custom">
+                            <i class="fas fa-user-plus me-2"></i>Crear Cuenta
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="login-footer">
+                <p>Auto Wash System &copy; 2025 | Desarrollado por Victorius</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Función para cambiar entre pestañas
+        function switchTab(tabName) {
+            // Remover clase active de todos los botones
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Ocultar todos los formularios
+            document.querySelectorAll('.form-content').forEach(form => {
+                form.classList.remove('active');
+            });
+            
+            // Activar la pestaña seleccionada
+            event.target.classList.add('active');
+            document.getElementById(tabName + 'Form').classList.add('active');
+        }
+
+        // Función para mostrar recuperación de contraseña
+        function showForgotPassword() {
+            alert('Funcionalidad de recuperación de contraseña - Por implementar');
+        }
+
+        // Actualizar fecha y hora (similar al sistema principal)
+        function updateDateTime() {
+            const now = new Date();
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                weekday: 'long'
+            };
+            const dateStr = now.toLocaleDateString('es-ES', options);
+            const timeStr = now.toLocaleTimeString('es-ES');
+            
+            // Si quisieras mostrar fecha/hora en el header, podrías agregarlo aquí
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDateTime();
+            
+            // Agregar validación básica visual (sin funcionalidad)
+            document.querySelectorAll('form').forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    alert('Sistema de autenticación - Por implementar');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
