@@ -1,13 +1,388 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Iniciar Sesión - Sistema de Gestión para Lavadero de Autos</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="styles.css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
+        /* Reset básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            background: linear-gradient(135deg, #0d6efd 0%, #0056b3 100%);
+            color: white;
+            text-align: center;
+            padding: 2rem 2rem;
+        }
+
+
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .brand-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .brand-subtitle {
+            opacity: 0.9;
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        .login-body {
+            padding: 2rem;
+        }
+
+        .form-tabs {
+            display: flex;
+            margin-bottom: 2rem;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #f8f9fa;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            background: transparent;
+            color: #6c757d;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .tab-btn.active {
+            background: #0d6efd;
+            color: white;
+            transform: scale(1.02);
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: rgba(13, 110, 253, 0.1);
+            color: #0d6efd;
+        }
+
+        .form-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .form-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .input-group-custom {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .form-check {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-check-input {
+            margin-right: 0.5rem;
+        }
+
+        .form-check-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary-custom {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #0d6efd 0%, #0056b3 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(13, 110, 253, 0.3);
+        }
+
+        .btn-primary-custom:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary-custom:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .forgot-link {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .forgot-link a {
+            color: #0d6efd;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .forgot-link a:hover {
+            text-decoration: underline;
+        }
+
+        .divider {
+            text-align: center;
+            position: relative;
+            margin: 1.5rem 0;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #dee2e6;
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 1rem;
+        }
+
+        .social-login {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-social {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #495057;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-social:hover {
+            border-color: #0d6efd;
+            transform: translateY(-1px);
+            text-decoration: none;
+            color: #495057;
+        }
+
+        .alert-custom {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border: 1px solid;
+        }
+
+        .alert-info-custom {
+            background-color: #cff4fc;
+            border-color: #b6effb;
+            color: #055160;
+        }
+
+        .login-footer {
+            background: #f8f9fa;
+            text-align: center;
+            padding: 1.5rem;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        /* Loading spinner */
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 0.5rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Notification styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            z-index: 10000;
+            max-width: 300px;
+            animation: slideInRight 0.3s ease;
+        }
+
+        .notification.success { background-color: #198754; }
+        .notification.error { background-color: #dc3545; }
+        .notification.warning { background-color: #ffc107; color: #212529; }
+        .notification.info { background-color: #0dcaf0; }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOutRight {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 10px;
+            }
+            
+            .login-header {
+                padding: 2rem 1.5rem;
+            }
+            
+            .login-body {
+                padding: 1.5rem;
+            }
+            
+            .social-login {
+                flex-direction: column;
+            }
+        }
+
+        /* Para pantallas muy pequeñas o zooms altos */
+        @media (max-height: 600px) {
+            .login-header {
+                padding: 1.5rem 2rem;
+            }
+            
+            .car-icon {
+                font-size: 2rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .brand-title {
+                font-size: 1.3rem;
+            }
+            
+            .login-body {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Para zooms muy altos */
+        @media (max-height: 500px) {
+            .login-card {
+                max-height: 95vh;
+                overflow-y: auto;
+            }
+            
+            .form-tabs {
+                margin-bottom: 1rem;
+            }
+            
+            .input-group-custom {
+                margin-bottom: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -15,9 +390,6 @@
         <div class="login-card">
             <!-- Header -->
             <div class="login-header">
-                <div class="car-icon">
-                    <i class="fas fa-car-wash"></i>
-                </div>
                 <h1 class="brand-title">Auto Wash System</h1>
                 <p class="brand-subtitle">Sistema de Gestión para Lavadero</p>
             </div>
@@ -27,24 +399,24 @@
                 <!-- Form Tabs -->
                 <div class="form-tabs">
                     <button class="tab-btn active" onclick="switchTab('login')">
-                        <i class="fas fa-sign-in-alt me-1"></i>Iniciar Sesión
+                        <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
                     </button>
                     <button class="tab-btn" onclick="switchTab('register')">
-                        <i class="fas fa-user-plus me-1"></i>Registrarse
+                        <i class="fas fa-user-plus"></i> Registrarse
                     </button>
                 </div>
 
                 <!-- Login Form -->
                 <div id="loginForm" class="form-content active">
-                    <form>
+                    <form id="loginFormSubmit">
                         <div class="input-group-custom">
-                            <label class="input-label">Usuario o Email</label>
-                            <input type="text" class="form-control" placeholder="Ingrese su usuario o email" required>
+                            <label class="input-label">Usuario</label>
+                            <input type="text" class="form-control" id="loginUser" placeholder="Ingrese su usuario" required>
                         </div>
 
                         <div class="input-group-custom">
                             <label class="input-label">Contraseña</label>
-                            <input type="password" class="form-control" placeholder="Ingrese su contraseña" required>
+                            <input type="password" class="form-control" id="loginPassword" placeholder="Ingrese su contraseña" required>
                         </div>
 
                         <div class="form-check">
@@ -55,7 +427,7 @@
                         </div>
 
                         <button type="submit" class="btn-primary-custom">
-                            <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
+                            <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
                         </button>
 
                         <div class="forgot-link">
@@ -81,46 +453,41 @@
 
                 <!-- Register Form -->
                 <div id="registerForm" class="form-content">
-                    <form>
+                    <form id="registerFormSubmit">
                         <div class="alert-custom alert-info-custom">
-                            <i class="fas fa-info-circle me-2"></i>
+                            <i class="fas fa-info-circle"></i>
                             Crea tu cuenta para acceder al sistema de gestión
                         </div>
 
                         <div class="input-group-custom">
                             <label class="input-label">Nombre Completo</label>
-                            <input type="text" class="form-control" placeholder="Ingrese su nombre completo" required>
-                        </div>
-
-                        <div class="input-group-custom">
-                            <label class="input-label">Email</label>
-                            <input type="email" class="form-control" placeholder="correo@ejemplo.com" required>
+                            <input type="text" class="form-control" id="registerName" placeholder="Ingrese su nombre completo" required>
                         </div>
 
                         <div class="input-group-custom">
                             <label class="input-label">Usuario</label>
-                            <input type="text" class="form-control" placeholder="Nombre de usuario" required>
+                            <input type="text" class="form-control" id="registerUser" placeholder="Nombre de usuario" required>
                         </div>
 
                         <div class="input-group-custom">
                             <label class="input-label">Contraseña</label>
-                            <input type="password" class="form-control" placeholder="Mínimo 8 caracteres" required>
+                            <input type="password" class="form-control" id="registerPassword" placeholder="Mínimo 6 caracteres" required>
                         </div>
 
                         <div class="input-group-custom">
                             <label class="input-label">Confirmar Contraseña</label>
-                            <input type="password" class="form-control" placeholder="Repita su contraseña" required>
+                            <input type="password" class="form-control" id="confirmPassword" placeholder="Repita su contraseña" required>
                         </div>
 
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="acceptTerms" required>
                             <label class="form-check-label" for="acceptTerms">
-                                Acepto los <a href="#" style="color: var(--primary-color);">términos y condiciones</a>
+                                Acepto los términos y condiciones
                             </label>
                         </div>
 
                         <button type="submit" class="btn-primary-custom">
-                            <i class="fas fa-user-plus me-2"></i>Crear Cuenta
+                            <i class="fas fa-user-plus"></i> Crear Cuenta
                         </button>
                     </form>
                 </div>
@@ -133,57 +500,183 @@
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Función para cambiar entre pestañas
         function switchTab(tabName) {
-            // Remover clase active de todos los botones
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.form-content').forEach(form => form.classList.remove('active'));
             
-            // Ocultar todos los formularios
-            document.querySelectorAll('.form-content').forEach(form => {
-                form.classList.remove('active');
-            });
-            
-            // Activar la pestaña seleccionada
             event.target.classList.add('active');
             document.getElementById(tabName + 'Form').classList.add('active');
         }
 
-        // Función para mostrar recuperación de contraseña
-        function showForgotPassword() {
-            alert('Funcionalidad de recuperación de contraseña - Por implementar');
+        // Mostrar notificación
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => {
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
         }
 
-        // Actualizar fecha y hora (similar al sistema principal)
-        function updateDateTime() {
-            const now = new Date();
-            const options = { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric',
-                weekday: 'long'
-            };
-            const dateStr = now.toLocaleDateString('es-ES', options);
-            const timeStr = now.toLocaleTimeString('es-ES');
-            
-            // Si quisieras mostrar fecha/hora en el header, podrías agregarlo aquí
-        }
-
-        // Inicializar
-        document.addEventListener('DOMContentLoaded', function() {
-            updateDateTime();
-            
-            // Agregar validación básica visual (sin funcionalidad)
-            document.querySelectorAll('form').forEach(form => {
-                form.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    alert('Sistema de autenticación - Por implementar');
+        // Función para hacer login
+        async function handleLogin(usuario, password) {
+            try {
+                const response = await fetch('http://localhost:3000/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ usuario, password })
                 });
+
+                return await response.json();
+            } catch (error) {
+                console.error('Error en login:', error);
+                return { success: false, message: 'Error de conexión con el servidor' };
+            }
+        }
+
+        // Función para registrar usuario
+        async function handleRegister(userData) {
+            try {
+                const response = await fetch('http://localhost:3000/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                });
+
+                return await response.json();
+            } catch (error) {
+                console.error('Error en registro:', error);
+                return { success: false, message: 'Error de conexión con el servidor' };
+            }
+        }
+
+        function showForgotPassword() {
+            showNotification('Funcionalidad de recuperación por implementar', 'info');
+        }
+
+        // Inicializar cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', function() {
+            // Manejar formulario de login
+            document.getElementById('loginFormSubmit').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const usuario = document.getElementById('loginUser').value.trim();
+                const password = document.getElementById('loginPassword').value;
+
+                if (!usuario || !password) {
+                    showNotification('Por favor, complete todos los campos', 'warning');
+                    return;
+                }
+
+                // Mostrar loading
+                submitBtn.classList.add('loading');
+                submitBtn.disabled = true;
+
+                try {
+                    const result = await handleLogin(usuario, password);
+                    
+                    if (result.success) {
+                        showNotification('¡Login exitoso! Redirigiendo...', 'success');
+                        
+                        // Guardar sesión si está marcado "recordar"
+                        if (document.getElementById('rememberMe').checked) {
+                            localStorage.setItem('lavadero_remember', 'true');
+                            localStorage.setItem('lavadero_user', usuario);
+                        }
+                        
+                        // Redirigir
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1500);
+                    } else {
+                        showNotification(result.message || 'Usuario o contraseña incorrectos', 'error');
+                    }
+                } catch (error) {
+                    showNotification('Error de conexión', 'error');
+                } finally {
+                    submitBtn.classList.remove('loading');
+                    submitBtn.disabled = false;
+                }
             });
+
+            // Manejar formulario de registro
+            document.getElementById('registerFormSubmit').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const name = document.getElementById('registerName').value.trim();
+                const usuario = document.getElementById('registerUser').value.trim();
+                const password = document.getElementById('registerPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+
+                // Validaciones
+                if (!name || !usuario || !password || !confirmPassword) {
+                    showNotification('Complete todos los campos', 'warning');
+                    return;
+                }
+
+                if (password.length < 6) {
+                    showNotification('La contraseña debe tener al menos 6 caracteres', 'warning');
+                    return;
+                }
+
+                if (password !== confirmPassword) {
+                    showNotification('Las contraseñas no coinciden', 'warning');
+                    return;
+                }
+
+                if (!document.getElementById('acceptTerms').checked) {
+                    showNotification('Debe aceptar los términos y condiciones', 'warning');
+                    return;
+                }
+
+                submitBtn.classList.add('loading');
+                submitBtn.disabled = true;
+
+                try {
+                    const result = await handleRegister({ name, usuario, password });
+                    
+                    if (result.success) {
+                        showNotification('¡Usuario creado exitosamente!', 'success');
+                        
+                        setTimeout(() => {
+                            switchTab('login');
+                            document.getElementById('loginUser').value = usuario;
+                        }, 1500);
+                    } else {
+                        showNotification(result.message || 'Error al crear el usuario', 'error');
+                    }
+                } catch (error) {
+                    showNotification('Error de conexión', 'error');
+                } finally {
+                    submitBtn.classList.remove('loading');
+                    submitBtn.disabled = false;
+                }
+            });
+
+            // Verificar si hay sesión guardada
+            if (localStorage.getItem('lavadero_remember') === 'true') {
+                const savedUser = localStorage.getItem('lavadero_user');
+                if (savedUser) {
+                    document.getElementById('loginUser').value = savedUser;
+                    document.getElementById('rememberMe').checked = true;
+                }
+            }
         });
     </script>
 </body>
