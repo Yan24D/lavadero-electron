@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoLavado - Panel Administrativo</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="javascript:void(0)">
+                <i class="fas fa-car-wash me-2"></i>Clean Car - Panel Admin
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0)">
+                            <i class="fas fa-calendar-day me-1"></i>
+                            <span id="currentDate"></span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0)">
+                            <i class="fas fa-clock me-1"></i>
+                            <span id="currentTime"></span>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle me-1"></i>Administrador
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Configuración</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="login.html"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <div class="container-fluid mt-4">
+        <div class="mainCard">
+            <!-- Tab Navigation -->
+            <div class="tabHeader">
+                <ul class="nav nav-tabs" id="mainTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="dashboardTab" data-bs-toggle="tab" data-bs-target="#dashboardPanel" type="button" role="tab">
+                            <i class="fas fa-chart-line me-2"></i>Dashboard
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="usersTab" data-bs-toggle="tab" data-bs-target="#usersPanel" type="button" role="tab">
+                            <i class="fas fa-users me-2"></i>Usuarios y Roles
+                            <span class="badge bg-primary rounded-pill ms-2">3</span>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="servicesTab" data-bs-toggle="tab" data-bs-target="#servicesPanel" type="button" role="tab">
+                            <i class="fas fa-dollar-sign me-2"></i>Servicios y Precios
+                            <span class="badge bg-primary rounded-pill ms-2">4</span>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="reportsTab" data-bs-toggle="tab" data-bs-target="#reportsPanel" type="button" role="tab">
+                            <i class="fas fa-file-chart-line me-2"></i>Reportes y Finanzas
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="historyTab" data-bs-toggle="tab" data-bs-target="#historyPanel" type="button" role="tab">
+                            <i class="fas fa-history me-2"></i>Historial
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="settingsTab" data-bs-toggle="tab" data-bs-target="#settingsPanel" type="button" role="tab">
+                            <i class="fas fa-cog me-2"></i>Configuración
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="tabBody">
+                <div class="tab-content" id="mainTabContent">
+                    
+                    <!-- Dashboard Panel -->
+                    <div class="tab-pane fade show active" id="dashboardPanel" role="tabpanel">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="sectionTitle">Dashboard Principal</h4>
+                            <div class="d-flex gap-2">
+                                <select class="form-select" style="width: auto;">
+                                    <option>Último mes</option>
+                                    <option>Última semana</option>
+                                    <option>Hoy</option>
+                                </select>
+                                <button class="btn btn-primary">
+                                    <i class="fas fa-download me-2"></i>Exportar
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Summary Cards -->
+                        <div class="row mb-4">
+                            <div class="col-lg-3 col-md-6 mb-4">
+                                <div class="summaryCard totalRevenue">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <p class="summaryLabel">Ingresos Hoy</p>
+                                            <h3 class="summaryValue">$720,000</h3>
+                                            <small class="text-success"><i class="fas fa-arrow-up"></i> +12.5%</small>
+                                        </div>
+                                        <div class="summaryIcon bg-success">
+                                            <i class="fas fa-dollar-sign"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 mb-4">
+                                <div class="summaryCard">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <p class="summaryLabel">Vehículos Atendidos</p>
+                                            <h3 class="summaryValue">32</h3>
+                                            <small class="text-success"><i class="fas fa-arrow-up"></i> +8%</small>
+                                        </div>
+                                        <div class="summaryIcon bg-primary">
+                                            <i class="fas fa-car"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 mb-4">
+                                <div class="summaryCard">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <p class="summaryLabel">Clientes Activos</p>
+                                            <h3 class="summaryValue">156</h3>
+                                            <small class="text-success"><i class="fas fa-arrow-up"></i> +15%</small>
+                                        </div>
+                                        <div class="summaryIcon bg-info">
+                                            <i class="fas fa-users"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 mb-4">
+                                <div class="summaryCard">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <p class="summaryLabel">Servicios Completados</p>
+                                            <h3 class="summaryValue">28</h3>
+                                            <small class="text-success"><i class="fas fa-arrow-up"></i> +5%</small>
+                                        </div>
+                                        <div class="summaryIcon bg-warning">
+                                            <i class="fas fa-check-circle"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Charts Row -->
+                        <div class="row">
+                            <div class="col-lg-8 mb-4">
+                                <div class="chartCard">
+                                    <div class="cardHeader">
+                                        <h5 class="cardTitle">Ingresos Semanales</h5>
+                                    </div>
+                                    <div class="cardBody">
+                                        <canvas id="revenueChart" height="100"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-4">
+                                <div class="chartCard">
+                                    <div class="cardHeader">
+                                        <h5 class="cardTitle">Distribución de Servicios</h5>
+                                    </div>
+                                    <div class="cardBody">
+                                        <canvas id="servicesChart" height="200"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Users Panel -->
+                    <div class="tab-pane fade" id="usersPanel" role="tabpanel">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="sectionTitle">Gestión de Usuarios y Roles</h4>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userModal">
+                                <i class="fas fa-plus me-2"></i>Nuevo Usuario
+                            </button>
+                        </div>
+
+                        <div class="tableContainer">
+                            <table class="table table-striped table-hover dataTable">
+                                <thead class="tableHeader">
+                                    <tr>
+                                        <th>Usuario</th>
+                                        <th>Nombre</th>
+                                        <th>Rol</th>
+                                        <th>Estado</th>
+                                        <th>Último Acceso</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>admin1</td>
+                                        <td>María García</td>
+                                        <td><span class="badge bg-primary">Administrador</span></td>
+                                        <td><span class="badge bg-success">Activo</span></td>
+                                        <td>Hace 5 min</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary me-1">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-danger">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>sec1</td>
+                                        <td>Juan Pérez</td>
+                                        <td><span class="badge bg-info">Secretario</span></td>
+                                        <td><span class="badge bg-success">Activo</span></td>
+                                        <td>Hace 1 hora</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary me-1">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-danger">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>lavador1</td>
+                                        <td>Carlos Rodríguez</td>
+                                        <td><span class="badge bg-secondary">Lavador</span></td>
+                                        <td><span class="badge bg-warning">Inactivo</span></td>
+                                        <td>Hace 2 horas</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary me-1">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-danger">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Services Panel -->
+                    <div class="tab-pane fade" id="servicesPanel" role="tabpanel">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="sectionTitle">Servicios y Precios</h4>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#serviceModal">
+                                <i class="fas fa-plus me-2"></i>Nuevo Servicio
+                            </button>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6 mb-4">
+                                <div class="serviceCard">
+                                    <div class="cardHeader">
+                                        <h5 class="cardTitle">Lavado Básico</h5>
+                                        <span class="badge bg-success">Activo</span>
+                                    </div>
+                                    <div class="cardBody">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p class="text-muted mb-1">Precio</p>
+                                                <h4 class="text-primary mb-3">$15,000</h4>
+                                            </div>
+                                            <div class="col-6">
+                                                <p class="text-muted mb-1">Duración</p>
+                                                <h5 class="mb-3">30 min</h5>
+                                            </div>
+                                        </div>
+                                        <p class="text-muted mb-3">Lavado exterior básico, aspirado interior</p>
+                                        <div class="d-flex gap-2">
+                                            <button class="btn btn-outline-primary btn-sm">
+                                                <i class="fas fa-edit"></i> Editar
+                                            </button>
+                                            <button class="btn btn-outline-danger btn-sm">
+                                                <i class="fas fa-trash"></i> Eliminar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-4">
+                                <div class="serviceCard">
+                                    <div class="cardHeader">
+                                        <h5 class="cardTitle">Lavado Completo</h5>
+                                        <span class="badge bg-success">Activo</span>
+                                    </div>
+                                    <div class="cardBody">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p class="text-muted mb-1">Precio</p>
+                                                <h4 class="text-primary mb-3">$25,000</h4>
+                                            </div>
+                                            <div class="col-6">
+                                                <p class="text-muted mb-1">Duración</p>
+                                                <h5 class="mb-3">45 min</h5>
+                                            </div>
+                                        </div>
+                                        <p class="text-muted mb-3">Lavado completo, aspirado, limpieza interior</p>
+                                        <div class="d-flex gap-2">
+                                            <button class="btn btn-outline-primary btn-sm">
+                                                <i class="fas fa-edit"></i> Editar
+                                            </button>
+                                            <button class="btn btn-outline-danger btn-sm">
+                                                <i class="fas fa-trash"></i> Eliminar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-4">
+                                <div class="serviceCard">
+                                    <div class="cardHeader">
+                                        <h5 class="cardTitle">Encerado</h5>
+                                        <span class="badge bg-success">Activo</span>
+                                    </div>
+                                    <div class="cardBody">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p class="text-muted mb-1">Precio</p>
+                                                <h4 class="text-primary mb-3">$35,000</h4>
+                                            </div>
+                                            <div class="col-6">
+                                                <p class="text-muted mb-1">Duración</p>
+                                                <h5 class="mb-3">60 min</h5>
+                                            </div>
+                                        </div>
+                                        <p class="text-muted mb-3">Lavado completo + encerado y pulido</p>
+                                        <div class="d-flex gap-2">
+                                            <button class="btn btn-outline-primary btn-sm">
+                                                <i class="fas fa-edit"></i> Editar
+                                            </button>
+                                            <button class="btn btn-outline-danger btn-sm">
+                                                <i class="fas fa-trash"></i> Eliminar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-4">
+                                <div class="serviceCard">
+                                    <div class="cardHeader">
+                                        <h5 class="cardTitle">Lavado Premium</h5>
+                                        <span class="badge bg-warning">Inactivo</span>
+                                    </div>
+                                    <div class="cardBody">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p class="text-muted mb-1">Precio</p>
+                                                <h4 class="text-primary mb-3">$50,000</h4>
+                                            </div>
+                                            <div class="col-6">
+                                                <p class="text-muted mb-1">Duración</p>
+                                                <h5 class="mb-3">90 min</h5>
+                                            </div>
+                                        </div>
+                                        <p class="text-muted mb-3">Servicio completo + detailing interior/exterior</p>
+                                        <div class="d-flex gap-2">
+                                            <button class="btn btn-outline-primary btn-sm">
+                                                <i class="fas fa-edit"></i> Editar
+                                            </button>
+                                            <button class="btn btn-outline-danger btn-sm">
+                                                <i class="fas fa-trash"></i> Eliminar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reports Panel -->
+                    <div class="tab-pane fade" id="reportsPanel" role="tabpanel">
+                        <div class="reportHeader">
+                            <h4 class="sectionTitle">Reportes y Finanzas</h4>
+                            <div class="exportButtons">
+                                <button class="btn btn-outline-primary me-2 actionBtn" id="exportCsvBtn">
+                                    <i class="fas fa-file-csv me-2"></i>Exportar CSV
+                                </button>
+                                <button class="btn btn-outline-danger actionBtn" id="generatePdfBtn">
+                                    <i class="fas fa-file-pdf me-2"></i>Generar PDF
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="tableContainer">
+                            <table class="table table-striped table-hover dataTable">
+                                <thead class="tableHeader">
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Vehículo</th>
+                                        <th>Placa</th>
+                                        <th>Servicio</th>
+                                        <th>Costo</th>
+                                        <th>Comisión</th>
+                                        <th>Lavador</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reportsTable">
+                                    <tr>
+                                        <td>14/09/2025 10:30</td>
+                                        <td>Automóvil</td>
+                                        <td>ABC-123</td>
+                                        <td>Lavado Completo</td>
+                                        <td>$25,000</td>
+                                        <td>$7,500</td>
+                                        <td>Carlos Rodríguez</td>
+                                        <td><span class="badge bg-success">Pagado</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>14/09/2025 11:15</td>
+                                        <td>SUV</td>
+                                        <td>XYZ-789</td>
+                                        <td>Encerado</td>
+                                        <td>$35,000</td>
+                                        <td>$10,500</td>
+                                        <td>Miguel Sánchez</td>
+                                        <td><span class="badge bg-success">Pagado</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>14/09/2025 12:00</td>
+                                        <td>Camioneta</td>
+                                        <td>DEF-456</td>
+                                        <td>Lavado Básico</td>
+                                        <td>$15,000</td>
+                                        <td>$4,500</td>
+                                        <td>Ana Gómez</td>
+                                        <td><span class="badge bg-warning">Pendiente</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Summary Cards -->
+                        <div class="row mt-4">
+                            <div class="col-md-4">
+                                <div class="summaryCard totalRevenue">
+                                    <p class="summaryLabel">Total Recaudado Hoy</p>
+                                    <h3 class="summaryValue">$720,000</h3>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="summaryCard totalCommissions">
+                                    <p class="summaryLabel">Total Comisiones</p>
+                                    <h3 class="summaryValue">$216,000</h3>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="summaryCard netBalance">
+                                    <p class="summaryLabel">Balance Neto</p>
+                                    <h3 class="summaryValue">$504,000</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- History Panel -->
+                    <div class="tab-pane fade" id="historyPanel" role="tabpanel">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="calendarCard">
+                                    <div class="cardHeader">
+                                        <h5 class="cardTitle">Seleccionar Fecha</h5>
+                                    </div>
+                                    <div class="cardBody">
+                                        <div id="calendarWidget"></div>
+                                        <div class="mt-3">
+                                            <button class="btn btn-primary w-100 actionBtn" id="loadHistoryBtn">
+                                                <i class="fas fa-search me-2"></i>Cargar Registros
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="historyCard">
+                                    <div class="cardHeader">
+                                        <h5 class="cardTitle">Registros Históricos</h5>
+                                        <div class="exportButtons">
+                                            <button class="btn btn-sm btn-outline-primary me-2 actionBtn" id="exportHistoryBtn">
+                                                <i class="fas fa-file-export me-1"></i>Exportar
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-danger actionBtn" id="pdfHistoryBtn">
+                                                <i class="fas fa-file-pdf me-1"></i>PDF
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="cardBody">
+                                        <div class="tableContainer">
+                                            <table class="table table-striped dataTable">
+                                                <thead class="tableHeader">
+                                                    <tr>
+                                                        <th>Hora</th>
+                                                        <th>Vehículo</th>
+                                                        <th>Placa</th>
+                                                        <th>Servicio</th>
+                                                        <th>Costo</th>
+                                                        <th>Lavador</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="historyRecords">
+                                                    <tr>
+                                                        <td colspan="6" class="emptyState">Seleccione una fecha para ver los registros</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="cardFooter">
+                                        <div class="row text-center">
+                                            <div class="col">
+                                                <p class="footerLabel">Total Recaudado</p>
+                                                <h5 class="footerValue text-primary">$0.00</h5>
+                                            </div>
+                                            <div class="col">
+                                                <p class="footerLabel">Comisiones</p>
+                                                <h5 class="footerValue text-secondary">$0.00</h5>
+                                            </div>
+                                            <div class="col">
+                                                <p class="footerLabel">Neto</p>
+                                                <h5 class="footerValue text-success">$0.00</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Settings Panel -->
+                    <div class="tab-pane fade" id="settingsPanel" role="tabpanel">
+                        <h4 class="sectionTitle">Configuración del Sistema</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <!-- General Settings -->
+                                <div class="settingsCard">
+                                    <div class="cardHeader">
+                                        <h5 class="cardTitle">Parámetros Generales</h5>
+                                    </div>
+                                    <div class="cardBody">
+                                        <form id="generalSettingsForm">
+                                            <div class="inputGroup">
+                                                <label for="defaultCommission" class="inputLabel">Porcentaje de Comisión por Defecto</label>
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" id="defaultCommission" min="0" max="100" value="30">
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                                <div class="form-text">Este valor se aplicará automáticamente al registrar nuevos servicios</div>
+                                            </div>
+                                            <div class="inputGroup">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="autoBackup" checked>
+                                                    <label class="form-check-label" for="autoBackup">Copias de seguridad automáticas</label>
+                                                </div>
+                                                <div class="form-text">Se realizará una copia de seguridad diaria al cerrar el sistema</div>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary actionBtn">
+                                                <i class="fas fa-save me-2"></i>Guardar Configuración
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <!-- Database Settings -->
+                                <div class="settingsCard mt-4">
+                                    <div class="cardHeader">
+                                        <h5 class="cardTitle">Base de Datos</h5>
+                                    </div>
+                                    <div class="cardBody">
+                                        <div class="databaseControls">
+                                            <button class="btn btn-outline-primary w-100 mb-2 actionBtn" id="backupBtn">
+                                                <i class="fas fa-database me-2"></i>Realizar Copia de Seguridad
+                                            </button>
+                                            <button class="btn btn-outline-secondary w-100 actionBtn" id="restoreBtn">
+                                                <i class="fas fa-upload me-2"></i>Restaurar Copia de Seguridad
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <!-- Washers Management -->
+                                <div class="settingsCard">
+                                    <div class="cardHeader">
+                                        <h5 class="cardTitle">Administrar Lavadores</h5>
+                                    </div>
+                                    <div class="cardBody">
+                                        <div class="inputGroup">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="newWasher" placeholder="Nombre del lavador">
+                                                <button class="btn btn-primary" type="button" id="addWasherBtn">
+                                                    <i class="fas fa-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <ul class="list-group managementList" id="washersList">
+                                            <li class="list-group-item listItem">
+                                                Carlos Rodríguez
+                                                <button class="btn btn-sm btn-outline-danger deleteBtn">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </li>
+                                            <li class="list-group-item listItem">
+                                                Miguel Sánchez
+                                                <button class="btn btn-sm btn-outline-danger deleteBtn">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </li>
+                                            <li class="list-group-item listItem">
+                                                Ana Gómez
+                                                <button class="btn btn-sm btn-outline-danger deleteBtn">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </li>
+                                            <li class="list-group-item listItem">
+                                                Juan Pérez
+                                                <button class="btn btn-sm btn-outline-danger deleteBtn">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Services Management -->
+                                <div class="settingsCard mt-4">
+                                    <div class="cardHeader">
+                                        <h5 class="cardTitle">Servicios Ofrecidos</h5>
+                                    </div>
+                                    <div class="cardBody">
+                                        <div class="inputGroup">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="newService" placeholder="Nombre del servicio">
+                                                <input type="number" class="form-control" id="servicePrice" placeholder="Precio">
+                                                <button class="btn btn-primary" type="button" id="addServiceBtn">
+                                                    <i class="fas fa-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <ul class="list-group managementList" id="servicesList">
+                                            <li class="list-group-item listItem">
+                                                Lavado Básico
+                                                <span class="badge bg-primary rounded-pill priceBadge">$15,000</span>
+                                            </li>
+                                            <li class="list-group-item listItem">
+                                                Lavado Completo
+                                                <span class="badge bg-primary rounded-pill priceBadge">$25,000</span>
+                                            </li>
+                                            <li class="list-group-item listItem">
+                                                Lavado Premium
+                                                <span class="badge bg-primary rounded-pill priceBadge">$50,000</span>
+                                            </li>
+                                            <li class="list-group-item listItem">
+                                                Encerado
+                                                <span class="badge bg-primary rounded-pill priceBadge">$35,000</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="appFooter">
+            <p>Clean Car &copy; 2025 | Panel Administrativo - Desarrollado por Victorius</p>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- User Modal -->
+    <div class="modal fade" id="userModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nuevo Usuario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="userForm">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre Completo</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Usuario</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Rol</label>
+                            <select class="form-select" required>
+                                <option value="">Seleccionar rol</option>
+                                <option value="admin">Administrador</option>
+                                <option value="secretario">Secretario</option>
+                                <option value="lavador">Lavador</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary">Guardar Usuario</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Service Modal -->
+    <div class="modal fade" id="serviceModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nuevo Servicio</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="serviceForm">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre del Servicio</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Precio</label>
+                            <input type="number" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Duración (minutos)</label>
+                            <input type="number" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Descripción</label>
+                            <textarea class="form-control" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" checked>
+                                <label class="form-check-label">Servicio activo</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary">Guardar Servicio</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications Container -->
+    <div id="notifications" class="notificationContainer"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="logic.js"></script>
+</body>
+</html>
