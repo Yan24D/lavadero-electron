@@ -849,8 +849,8 @@ body {
 /* ===== DARK MODE SUPPORT (FUTURE) ===== */
 @media (prefers-color-scheme: dark) {
     :root {
-        --light-bg: #2d3748;
-        --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        --light-bg: #f8f9fa;
+        --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 }
 
