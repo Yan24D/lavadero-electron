@@ -579,3 +579,30 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// Función para obtener datos de usuario logueado
+function getCurrentUser() {
+  const userData = localStorage.getItem('lavadero_user_data');
+  return userData ? JSON.parse(userData) : null;
+}
+
+// Función para verificar autenticación
+function checkAuth() {
+  const user = getCurrentUser();
+  if (!user && window.location.pathname !== '/login.html') {
+    window.location.href = 'login.html';
+    return false;
+  }
+  return true;
+}
+
+// Actualizar nombre de usuario en navbar
+document.addEventListener('DOMContentLoaded', function() {
+  const userNameEl = document.getElementById('userName');
+  if (userNameEl) {
+    const user = getCurrentUser();
+    if (user) {
+      userNameEl.textContent = user.nombre || user.usuario;
+    }
+  }
+});

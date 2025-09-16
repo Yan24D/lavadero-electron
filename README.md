@@ -25,16 +25,14 @@ El sistema funciona como aplicación de escritorio (con **Electron.js**), con fr
 
 El sistema está dirigido al personal del lavadero y contempla distintos **roles con interfaces específicas**:
 
-- **Gerente**  
+- **Administrador**  
   - Acceso a una **vista general de todo el sistema**.  
   - Consultar reportes completos, estadísticas y administración total.  
 
-- **Administrador**  
+- **Secretario**  
   - Registrar vehículos y llenar formularios.  
   - Consultar y editar reportes diarios.  
 
-- **Lavador (futuro)**  
-  - Interfaz simplificada para marcar servicios realizados y consultar asignaciones.  
 
 Cada rol contará con un **acceso independiente después del login**, y se mostrará una interfaz diferente según el tipo de usuario.  
 
@@ -89,12 +87,12 @@ CREATE TABLE usuarios (
   id INT AUTO_INCREMENT PRIMARY KEY,
   usuario VARCHAR(50) NOT NULL,
   password VARCHAR(255) NOT NULL,
-  rol ENUM('gerente', 'administrador', 'lavador') NOT NULL
+  rol ENUM('administrador', 'secretario') NOT NULL
 );
 
 -- Ejemplos
-INSERT INTO usuarios (usuario, password, rol) VALUES ("gerente1", "1234", "gerente");
 INSERT INTO usuarios (usuario, password, rol) VALUES ("admin1", "1234", "administrador");
+INSERT INTO usuarios (usuario, password, rol) VALUES ("secret", "1234", "secretario");
 ```
 
 ### 4. Iniciar el backend
@@ -113,7 +111,7 @@ npm start
 ---
 
 ## 📌 Estado actual
-✅ Login básico implementado con roles (Gerente, Administrador)  
+✅ Login básico implementado con roles (Administrador,secretario )  
 ✅ Conexión con MySQL  
 ⬜ Vista gerente con reportes generales  
 ⬜ Vista administrador con formularios y registros  
@@ -124,7 +122,7 @@ npm start
 
 ## 👥 Colaboradores
 - Yancarlos  
-- [Agregar aquí tu compañero de proyecto]  
+- Victoria  
 
 ---
 

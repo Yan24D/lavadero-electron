@@ -43,6 +43,7 @@ app.post("/login", (req, res) => {
           id: result[0].id,
           usuario: result[0].usuario,
           nombre: result[0].nombre || result[0].usuario
+          rol: result[0].rol
         }
       });
     } else {

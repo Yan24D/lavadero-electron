@@ -19,7 +19,7 @@
             align-items: center;
             justify-content: center;
             padding: 10px 10px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #ffff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
@@ -390,7 +390,7 @@
         <div class="login-card">
             <!-- Header -->
             <div class="login-header">
-                <h1 class="brand-title">Auto Wash System</h1>
+                <h1 class="brand-title">Auto Clean System</h1>
                 <p class="brand-subtitle">Sistema de Gestión para Lavadero</p>
             </div>
 
@@ -495,7 +495,7 @@
 
             <!-- Footer -->
             <div class="login-footer">
-                <p>Auto Wash System &copy; 2025 | Desarrollado por Victorius</p>
+                <p>Auto Clean &copy; 2025 | Desarrollado por Victorius</p>
             </div>
         </div>
     </div>
@@ -598,7 +598,22 @@
                             localStorage.setItem('lavadero_remember', 'true');
                             localStorage.setItem('lavadero_user', usuario);
                         }
-                        
+                        // Redirigir según rol
+                        const userRole = result.user.rol;
+                        let redirectUrl = 'admin.html'; // Por defecto
+
+                        switch(userRole) {
+                        case 'secretario':
+                            redirectUrl = 'secretario.html';
+                            break;
+                        case 'gerente':
+                            redirectUrl = 'gerente.html';
+                            break;
+                        case 'administrador':
+                        default:
+                            redirectUrl = 'admin.html';
+                            break;
+                        }
                         // Redirigir
                         setTimeout(() => {
                             window.location.href = 'admin.html';
