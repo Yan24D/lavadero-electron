@@ -1,21 +1,58 @@
 {
   "name": "lavadero-electron",
   "version": "1.0.0",
-  "description": "",
+  "description": "Sistema digital multiplataforma para la gestión administrativa de un lavadero de vehículos",
   "main": "main.js",
   "scripts": {
-    "start": "npx electron ."
+    "start": "electron .",
+    "dev": "nodemon backend/server.js",
+    "server": "node backend/server.js",
+    "build": "electron-builder",
+    "dist": "electron-builder --publish=never"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "electron",
+    "lavadero",
+    "gestion",
+    "vehiculos",
+    "mysql"
+  ],
+  "author": "Yancarlos & Victorius",
+  "license": "MIT",
   "devDependencies": {
-    "electron": "^30.0.0"
+    "electron": "^27.0.0",
+    "electron-builder": "^24.6.4",
+    "nodemon": "^3.0.1"
   },
   "dependencies": {
-    "body-parser": "^2.2.0",
+    "express": "^4.18.2",
     "cors": "^2.8.5",
-    "express": "^5.1.0",
-    "mysql": "^2.18.1"
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.6.3",
+    "dotenv": "^16.3.1"
+  },
+  "build": {
+    "appId": "com.victorius.lavadero",
+    "productName": "Auto Clean System",
+    "directories": {
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "frontend/**/*",
+      "backend/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "target": "dmg"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
   }
 }
