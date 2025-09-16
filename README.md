@@ -4,7 +4,7 @@ Este proyecto es un **sistema digital multiplataforma** para la gestión adminis
 Su objetivo principal es reemplazar el registro manual en planillas físicas por un sistema más eficiente y seguro que integre:
 
 - 📋 **Registro de usuarios y vehículos**  
-- 💵 **Gestión de pagos y porcentajes de lavadores**  
+- 🛠️ **Gestión de servicios ofrecidos por el lavadero**  
 - 📊 **Generación de reportes**  
 - 🔐 **Acceso seguro con login de usuarios y roles**  
 
@@ -23,16 +23,17 @@ El sistema funciona como aplicación de escritorio (con **Electron.js**), con fr
 
 ## 👥 Roles de usuario
 
-El sistema está dirigido al personal del lavadero y contempla distintos **roles con interfaces específicas**:
+El sistema está dirigido al personal del lavadero y contempla 2 **roles con interfaces específicas**:
 
 - **Administrador**  
-  - Acceso a una **vista general de todo el sistema**.  
+  - Acceso total al sistema.  
   - Consultar reportes completos, estadísticas y administración total.  
+  - Definir los servicios disponibles y precios.  
 
 - **Secretario**  
   - Registrar vehículos y llenar formularios.  
   - Consultar y editar reportes diarios.  
-
+  - Asociar servicios a cada vehículo atendido.  
 
 Cada rol contará con un **acceso independiente después del login**, y se mostrará una interfaz diferente según el tipo de usuario.  
 
@@ -43,24 +44,28 @@ Cada rol contará con un **acceso independiente después del login**, y se mostr
 ```
 lavadero-electron/
 │── backend/                  
-│   │── db.js             → conexión con MySQL
-│   │── server.js         → servidor Express y rutas (login con roles)
+│   ├── config/            → conexión con MySQL y variables .env
+│   ├── routes/            → rutas separadas (auth, registros, reportes)
+│   ├── controllers/       → lógica de negocio
+│   ├── models/            → definición de tablas MySQL
+│   ├── middleware/        → autenticación y validación de roles
+│   └── server.js          → configuración Express
 │
 │── frontend/                
-│   │── login.html         → pantalla de inicio de sesión
-│   │── gerente.html       → interfaz para el gerente (vista general, reportes, estadísticas)
-│   │── admin.html         → interfaz para el administrador (formularios, registros diarios, reportes)
-│   │── lavador.html       → interfaz futura para el lavador (opcional)
-│   │── styles.css         → estilos compartidos
-│   │── logic.js           → lógica del login (redirige según rol)
+│   ├── views/             
+│   │   ├── login.html         → pantalla de inicio de sesión
+│   │   ├── admin.html         → interfaz del administrador
+│   │   └── secretario.html    → interfaz del secretario
+│   ├── assets/
+│   │   ├── css/styles.css     → estilos compartidos
+│   │   └── js/logic.js        → redirección según rol
 │
 │── main.js                 → configuración de Electron
-│── package.json            → configuración del proyecto
+│── package.json            → dependencias del proyecto
+│── .env                    → variables de entorno (usuario DB, password, puerto)
 │── .gitignore              → exclusiones (node_modules, etc.)
 │── README.md               → documentación del proyecto
 ```
-
-⚠️ Nota: El actual `index.html` que contiene funciones de administrador se reemplaza por **`admin.html`**.  
 
 ---
 
@@ -87,13 +92,18 @@ CREATE TABLE usuarios (
   id INT AUTO_INCREMENT PRIMARY KEY,
   usuario VARCHAR(50) NOT NULL,
   password VARCHAR(255) NOT NULL,
-  rol ENUM('administrador', 'secretario') NOT NULL
+  rol ENUM('administrador', 'secretario') NOT NULL,
+  nombre_completo VARCHAR(100) NOT NULL
 );
 
--- Ejemplos
-INSERT INTO usuarios (usuario, password, rol) VALUES ("admin1", "1234", "administrador");
-INSERT INTO usuarios (usuario, password, rol) VALUES ("secret", "1234", "secretario");
+INSERT INTO usuarios (usuario, password, rol, nombre_completo) 
+VALUES ("admin1", "1234", "administrador", "Administrador Principal");
+
+INSERT INTO usuarios (usuario, password, rol, nombre_completo) 
+VALUES ("sec1", "1234", "secretario", "Secretario General");
 ```
+
+*(Se recomienda reemplazar las contraseñas por versiones encriptadas con bcrypt u otra librería antes de producción).*  
 
 ### 4. Iniciar el backend
 ```bash
@@ -111,18 +121,17 @@ npm start
 ---
 
 ## 📌 Estado actual
-✅ Login básico implementado con roles (Administrador,secretario )  
+✅ Login básico implementado con roles (Administrador, Secretario)  
 ✅ Conexión con MySQL  
-⬜ Vista gerente con reportes generales  
-⬜ Vista administrador con formularios y registros  
-⬜ Interfaz lavador (futuro)  
-⬜ Seguridad avanzada (hash de contraseñas)  
+⬜ Vista administrador con reportes y gestión de servicios  
+⬜ Vista secretario con registros de vehículos y reportes diarios  
+⬜ Seguridad avanzada (hash de contraseñas, validaciones)  
 
 ---
 
 ## 👥 Colaboradores
 - Yancarlos  
-- Victoria  
+- [Agregar aquí tu compañero de proyecto]  
 
 ---
 
