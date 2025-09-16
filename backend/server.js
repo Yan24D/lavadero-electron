@@ -42,7 +42,7 @@ app.post("/login", (req, res) => {
         user: {
           id: result[0].id,
           usuario: result[0].usuario,
-          nombre: result[0].nombre || result[0].usuario
+          nombre: result[0].nombre || result[0].usuario,
           rol: result[0].rol
         }
       });
@@ -136,7 +136,84 @@ app.get("/test-db", (req, res) => {
     }
   });
 });
+// Ruta para guardar servicio
+app.post("/servicios", (req, res) => {
+  const { 
+    fecha, hora, tipo_vehiculo, placa, tipo_servicio, 
+    costo, comision, porcentaje_comision, lavador, 
+    observaciones, pagado, usuario_id 
+  } = req.body;
 
+  if (!fecha || !hora || !tipo_vehiculo || !placa || !tipo_servicio || !costo || !lavador) {
+    return res.status(400).json({ 
+      success: false, 
+      message: "Campos obligatorios faltantes" 
+    });
+  }
+
+  const query = `INSERT INTO servicios 
+    (fecha, hora, tipo_vehiculo, placa, tipo_servicio, costo, comision, porcentaje_comision, lavador, observaciones, pagado, usuario_id) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+  db.query(query, [fecha, hora, tipo_vehiculo, placa, tipo_servicio, costo, comision, porcentaje_comision, lavador, observaciones, pagado, usuario_id], (err, result) => {
+    if (err) {
+      console.error("Error al guardar servicio:", err);
+      return res.status(500).json({ success: false, message: "Error al guardar servicio" });
+    }
+
+    res.json({ 
+      success: true, 
+      message: "Servicio registrado correctamente",
+      id: result.insertId 
+    });
+  });
+});
+
+// Ruta para obtener servicios por fecha
+app.get("/servicios/:fecha", (req, res) => {
+  const fecha = req.params.fecha;
+  const query = "SELECT * FROM servicios WHERE fecha = ? ORDER BY hora DESC";
+  
+  db.query(query, [fecha], (err, result) => {
+    if (err) {
+      console.error("Error consultando servicios:", err);
+      return res.status(500).json({ success: false, message: "Error consultando servicios" });
+    }
+    
+    res.json({ success: true, data: result });
+  });
+});
+
+// Ruta para buscar servicios con filtros
+app.post("/servicios/buscar", (req, res) => {
+  const { placa, fecha, tipo_servicio } = req.body;
+  let query = "SELECT * FROM servicios WHERE 1=1";
+  let params = [];
+
+  if (placa) {
+    query += " AND placa LIKE ?";
+    params.push(`%${placa}%`);
+  }
+  if (fecha) {
+    query += " AND fecha = ?";
+    params.push(fecha);
+  }
+  if (tipo_servicio) {
+    query += " AND tipo_servicio = ?";
+    params.push(tipo_servicio);
+  }
+
+  query += " ORDER BY fecha DESC, hora DESC";
+
+  db.query(query, params, (err, result) => {
+    if (err) {
+      console.error("Error en búsqueda:", err);
+      return res.status(500).json({ success: false, message: "Error en búsqueda" });
+    }
+    
+    res.json({ success: true, data: result });
+  });
+});
 // Iniciar servidor
 app.listen(3000, () => {
   console.log("🚀 Servidor backend en http://localhost:3000");
