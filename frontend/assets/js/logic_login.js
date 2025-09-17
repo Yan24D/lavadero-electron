@@ -112,11 +112,17 @@ document.addEventListener('DOMContentLoaded', function() {
             if (result.success) {
                 showNotification('¡Login exitoso! Redirigiendo...', 'success');
                 
+                localStorage.setItem('lavadero_user_data', JSON.stringify({
+                    id: result.user.id,
+                    nombre: result.user.nombre,
+                    email: result.user.email,
+                    rol: result.user.rol,
+                    token: result.token
+                }));
                 // Guardar sesión si está marcado "recordar"
                 if (document.getElementById('rememberMe').checked) {
                     localStorage.setItem('lavadero_remember', 'true');
                     localStorage.setItem('lavadero_user', email);
-                    localStorage.setItem('lavadero_token', result.token);
                 }
 
                 // Redirigir según rol

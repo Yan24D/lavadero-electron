@@ -339,20 +339,20 @@ class SecretarioSystem {
     // ===========================================
 
     // 5. SELECCIONAR SERVICIO RÁPIDO - Modificado
-seleccionarServicioRapido(card) {
-    // Remover selección anterior
-    document.querySelectorAll('.serviceQuickCard').forEach(c => c.classList.remove('selected'));
-    card.classList.add('selected');
-    
-    const serviceId = card.dataset.serviceId;
-    document.getElementById('serviceType').value = serviceId;
-    
-    // Trigger evento change para actualizar precio
-    document.getElementById('serviceType').dispatchEvent(new Event('change'));
-    
-    // Actualizar precio si ya hay vehículo seleccionado
-    this.actualizarPrecioPorVehiculo();
-}
+    seleccionarServicioRapido(card) {
+        // Remover selección anterior
+        document.querySelectorAll('.serviceQuickCard').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        
+        const serviceId = card.dataset.serviceId;
+        document.getElementById('serviceType').value = serviceId;
+        
+        // Trigger evento change para actualizar precio
+        document.getElementById('serviceType').dispatchEvent(new Event('change'));
+        
+        // Actualizar precio si ya hay vehículo seleccionado
+        this.actualizarPrecioPorVehiculo();
+    }
 
     calcularComision() {
         const costo = parseFloat(document.getElementById('serviceCost').value) || 0;
