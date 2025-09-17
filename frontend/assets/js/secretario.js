@@ -75,8 +75,19 @@ class SecretarioSystem {
         // Actualizar comisión automáticamente
         document.getElementById('serviceCost').addEventListener('input', () => this.calcularComision());
         document.getElementById('commissionPercent').addEventListener('input', () => this.calcularComision());
-    }
 
+        // AGREGAR: Validación en tiempo real para combinación servicio-vehículo
+        document.getElementById('serviceType').addEventListener('change', (e) => {
+            this.actualizarPrecioPorVehiculo();
+            this.validarCombinacionServicioVehiculo();
+        });
+        
+        document.getElementById('vehicleType').addEventListener('change', (e) => {
+            this.actualizarPrecioPorVehiculo();
+            this.validarCombinacionServicioVehiculo();
+        });
+    }
+    
     inicializarDateTime() {
         this.actualizarDateTime();
         setInterval(() => this.actualizarDateTime(), 1000);
@@ -109,23 +120,24 @@ class SecretarioSystem {
     }
 
     async cargarServicios() {
-        try {
-            const response = await fetch(`${this.API_BASE}/servicios`, {
-                headers: { 'Authorization': `Bearer ${this.user.token}` }
-            });
-            
-            const result = await response.json();
-            
-            if (result.success) {
-                this.servicios = result.servicios;
-                this.llenarSelectServicios();
-                this.actualizarServiciosRapidos();
-            }
-        } catch (error) {
-            console.error('Error cargando servicios:', error);
-            this.mostrarNotificacion('Error cargando servicios', 'warning');
+    try {
+        const response = await fetch(`${this.API_BASE}/servicios/populares`, {
+            headers: { 'Authorization': `Bearer ${this.user.token}` }
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            this.serviciosConPrecios = result.servicios_populares;
+            this.llenarSelectServicios();
+            this.actualizarServiciosRapidos();
+            console.log('✅ Servicios cargados:', this.serviciosConPrecios.length);
         }
+    } catch (error) {
+        console.error('Error cargando servicios:', error);
+        this.mostrarNotificacion('Error cargando servicios', 'warning');
     }
+}
 
     async cargarLavadores() {
         try {
@@ -152,28 +164,69 @@ class SecretarioSystem {
         }
     }
 
+    // 2. LLENAR SELECT SERVICIOS - Modificado para precios variables
     llenarSelectServicios() {
         const select = document.getElementById('serviceType');
         select.innerHTML = '<option value="" selected disabled>Seleccione el servicio</option>';
         
-        this.servicios.forEach(servicio => {
+        // Agrupar servicios únicos (sin importar tipo de vehículo)
+        const serviciosUnicos = {};
+        this.serviciosConPrecios.forEach(servicio => {
+            if (!serviciosUnicos[servicio.id]) {
+                serviciosUnicos[servicio.id] = {
+                    id: servicio.id,
+                    nombre: servicio.nombre,
+                    descripcion: servicio.descripcion || ''
+                };
+            }
+        });
+        
+        Object.values(serviciosUnicos).forEach(servicio => {
             const option = document.createElement('option');
             option.value = servicio.id;
-            option.textContent = `${servicio.nombre} - $${servicio.precio_base}`;
-            option.dataset.precio = servicio.precio_base;
+            option.textContent = servicio.nombre;
+            if (servicio.descripcion) {
+                option.title = servicio.descripcion;
+            }
             select.appendChild(option);
         });
 
-        // Evento para auto-completar precio
-        select.addEventListener('change', (e) => {
-            const selectedOption = e.target.selectedOptions[0];
-            if (selectedOption && selectedOption.dataset.precio) {
-                document.getElementById('serviceCost').value = selectedOption.dataset.precio;
-                this.calcularComision();
-            }
-        });
+        // Eventos para actualizar precio automáticamente
+        select.addEventListener('change', () => this.actualizarPrecioPorVehiculo());
+        
+        const vehicleSelect = document.getElementById('vehicleType');
+        vehicleSelect.addEventListener('change', () => this.actualizarPrecioPorVehiculo());
     }
 
+    // 3. NUEVA FUNCIÓN - Actualizar precio según vehículo seleccionado
+    actualizarPrecioPorVehiculo() {
+        const servicioId = document.getElementById('serviceType').value;
+        const tipoVehiculo = document.getElementById('vehicleType').value;
+        
+        if (servicioId && tipoVehiculo) {
+            const servicioEncontrado = this.serviciosConPrecios.find(
+                s => s.id == servicioId && s.tipo_vehiculo === tipoVehiculo
+            );
+            
+            if (servicioEncontrado) {
+                document.getElementById('serviceCost').value = servicioEncontrado.precio;
+                this.calcularComision();
+                
+                // Marcar campo como válido
+                document.getElementById('serviceCost').classList.add('is-valid');
+                document.getElementById('serviceCost').classList.remove('is-invalid');
+            } else {
+                // Si no hay precio para esa combinación, limpiar y notificar
+                document.getElementById('serviceCost').value = '';
+                this.mostrarNotificacion(
+                    `No hay precio definido para ${this.getNombreVehiculo(tipoVehiculo)} en este servicio`, 
+                    'warning'
+                );
+            }
+        }
+    }
+
+    
     llenarSelectLavadores() {
         const select = document.getElementById('washerSelect');
         select.innerHTML = '<option value="" selected disabled>Seleccione el lavador</option>';
@@ -186,40 +239,120 @@ class SecretarioSystem {
         });
     }
 
+    // 4. ACTUALIZAR SERVICIOS RÁPIDOS - Completamente reescrita
     actualizarServiciosRapidos() {
-        const cards = document.querySelectorAll('.serviceQuickCard');
-        const serviciosRapidos = this.servicios.slice(0, 4); // Primeros 4 servicios
+        const container = document.getElementById('quickServicesContainer');
         
-        cards.forEach((card, index) => {
-            if (serviciosRapidos[index]) {
-                const servicio = serviciosRapidos[index];
-                card.dataset.serviceId = servicio.id;
-                card.dataset.price = servicio.precio_base;
-                
-                card.querySelector('h6').textContent = servicio.nombre;
-                card.querySelector('.servicePrice').textContent = `$${parseFloat(servicio.precio_base).toLocaleString()}`;
+        if (!this.serviciosConPrecios || this.serviciosConPrecios.length === 0) {
+            container.innerHTML = `
+                <div class="col-12">
+                    <div class="text-center py-4">
+                        <i class="fas fa-tools fa-2x text-muted mb-2"></i>
+                        <p class="text-muted">No hay servicios disponibles</p>
+                    </div>
+                </div>
+            `;
+            return;
+        }
+        
+        // Obtener servicios únicos más populares (primero por uso, luego alfabético)
+        const serviciosUnicos = {};
+        this.serviciosConPrecios.forEach(servicio => {
+            if (!serviciosUnicos[servicio.id] || 
+                serviciosUnicos[servicio.id].veces_usado < servicio.veces_usado) {
+                serviciosUnicos[servicio.id] = servicio;
             }
+        });
+        
+        const serviciosPopulares = Object.values(serviciosUnicos)
+            .sort((a, b) => b.veces_usado - a.veces_usado || a.nombre.localeCompare(b.nombre))
+            .slice(0, 4);
+        
+        // Obtener precio por defecto (para automóvil) de cada servicio
+        const serviciosConPrecioDefault = serviciosPopulares.map(servicio => {
+            const precioAutomovil = this.serviciosConPrecios.find(
+                s => s.id === servicio.id && s.tipo_vehiculo === 'car'
+            );
+            return {
+                ...servicio,
+                precio_default: precioAutomovil ? precioAutomovil.precio : null
+            };
+        });
+        
+        container.innerHTML = serviciosConPrecioDefault.map(servicio => `
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="serviceQuickCard" data-service-id="${servicio.id}" 
+                    title="${servicio.descripcion || servicio.nombre}">
+                    <div class="serviceIcon">
+                        <i class="fas ${this.getIconoServicio(servicio.nombre)}"></i>
+                    </div>
+                    <h6>${servicio.nombre}</h6>
+                    <p class="servicePrice">
+                        ${servicio.precio_default 
+                            ? `$${parseFloat(servicio.precio_default).toLocaleString()}` 
+                            : 'Precio variable'
+                        }
+                    </p>
+                    <small class="text-muted">
+                        ${servicio.precio_default ? 'Automóvil' : 'Según vehículo'}
+                    </small>
+                </div>
+            </div>
+        `).join('');
+        
+        // Agregar eventos a las nuevas tarjetas
+        container.querySelectorAll('.serviceQuickCard').forEach(card => {
+            card.addEventListener('click', () => this.seleccionarServicioRapido(card));
         });
     }
 
+    // Nueva función de validación en tiempo real
+    validarCombinacionServicioVehiculo() {
+        const servicioId = document.getElementById('serviceType').value;
+        const tipoVehiculo = document.getElementById('vehicleType').value;
+        const costField = document.getElementById('serviceCost');
+        
+        if (servicioId && tipoVehiculo) {
+            const combinacionValida = this.serviciosConPrecios.some(
+                s => s.id == servicioId && s.tipo_vehiculo === tipoVehiculo
+            );
+            
+            if (!combinacionValida) {
+                costField.value = '';
+                costField.classList.add('is-invalid');
+                costField.classList.remove('is-valid');
+                
+                // Mostrar mensaje de ayuda
+                const helpText = costField.parentElement.querySelector('.invalid-feedback') || 
+                            document.createElement('div');
+                helpText.className = 'invalid-feedback';
+                helpText.textContent = 'No hay precio definido para esta combinación servicio-vehículo';
+                
+                if (!costField.parentElement.querySelector('.invalid-feedback')) {
+                    costField.parentElement.appendChild(helpText);
+                }
+            }
+        }
+    }
     // ===========================================
     // GESTIÓN DE SERVICIOS RÁPIDOS
     // ===========================================
 
-    seleccionarServicioRapido(card) {
-        // Remover selección anterior
-        document.querySelectorAll('.serviceQuickCard').forEach(c => c.classList.remove('selected'));
-        
-        // Seleccionar nuevo
-        card.classList.add('selected');
-        
-        const serviceId = card.dataset.serviceId;
-        const price = card.dataset.price;
-        
-        document.getElementById('serviceType').value = serviceId;
-        document.getElementById('serviceCost').value = price;
-        this.calcularComision();
-    }
+    // 5. SELECCIONAR SERVICIO RÁPIDO - Modificado
+seleccionarServicioRapido(card) {
+    // Remover selección anterior
+    document.querySelectorAll('.serviceQuickCard').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    
+    const serviceId = card.dataset.serviceId;
+    document.getElementById('serviceType').value = serviceId;
+    
+    // Trigger evento change para actualizar precio
+    document.getElementById('serviceType').dispatchEvent(new Event('change'));
+    
+    // Actualizar precio si ya hay vehículo seleccionado
+    this.actualizarPrecioPorVehiculo();
+}
 
     calcularComision() {
         const costo = parseFloat(document.getElementById('serviceCost').value) || 0;
@@ -277,6 +410,7 @@ class SecretarioSystem {
         }
     }
 
+    // 6. VALIDACIÓN MEJORADA - Con validación de vehículo y servicio
     validarFormulario() {
         const campos = [
             { id: 'vehicleType', nombre: 'Tipo de vehículo' },
@@ -288,6 +422,7 @@ class SecretarioSystem {
         ];
 
         let esValido = true;
+        const errores = [];
 
         campos.forEach(campo => {
             const elemento = document.getElementById(campo.id);
@@ -295,6 +430,7 @@ class SecretarioSystem {
 
             if (!valor || (campo.id === 'serviceCost' && parseFloat(valor) <= 0)) {
                 this.marcarCampoInvalido(elemento);
+                errores.push(campo.nombre);
                 esValido = false;
             } else {
                 this.marcarCampoValido(elemento);
@@ -305,11 +441,31 @@ class SecretarioSystem {
         const placa = document.getElementById('licensePlate').value.trim();
         if (placa && placa.length < 3) {
             this.marcarCampoInvalido(document.getElementById('licensePlate'));
+            errores.push('Placa (mínimo 3 caracteres)');
             esValido = false;
         }
 
+        // NUEVA VALIDACIÓN: Verificar que existe precio para la combinación servicio-vehículo
+        const servicioId = document.getElementById('serviceType').value;
+        const tipoVehiculo = document.getElementById('vehicleType').value;
+        
+        if (servicioId && tipoVehiculo) {
+            const combinacionValida = this.serviciosConPrecios.some(
+                s => s.id == servicioId && s.tipo_vehiculo === tipoVehiculo
+            );
+            
+            if (!combinacionValida) {
+                errores.push('Combinación servicio-vehículo no disponible');
+                esValido = false;
+            }
+        }
+
         if (!esValido) {
-            this.mostrarNotificacion('Por favor, complete todos los campos obligatorios correctamente.', 'warning');
+            const mensajeError = errores.length === 1 
+                ? `Por favor, complete: ${errores[0]}`
+                : `Por favor, complete los siguientes campos: ${errores.join(', ')}`;
+            
+            this.mostrarNotificacion(mensajeError, 'warning');
         }
 
         return esValido;
@@ -358,6 +514,36 @@ class SecretarioSystem {
         document.getElementById('commissionPercent').value = '30';
     }
 
+    // ===========================================
+    // FUNCIONES AUXILIARES NUEVAS
+    // ===========================================
+
+    // Obtener nombre legible del vehículo
+    getNombreVehiculo(tipoVehiculo) {
+        const nombres = {
+            'car': 'Automóvil',
+            'pickup': 'Camioneta',
+            'suv': 'SUV',
+            'motorcycle': 'Motocicleta',
+            'truck': 'Camión'
+        };
+        return nombres[tipoVehiculo] || tipoVehiculo;
+    }
+
+    // Obtener icono apropiado según el nombre del servicio
+    getIconoServicio(nombreServicio) {
+        const nombre = nombreServicio.toLowerCase();
+        
+        if (nombre.includes('lavado')) return 'fa-soap';
+        if (nombre.includes('aspirado')) return 'fa-wind';
+        if (nombre.includes('encerado') || nombre.includes('cera')) return 'fa-star';
+        if (nombre.includes('motor')) return 'fa-cog';
+        if (nombre.includes('completo') || nombre.includes('integral')) return 'fa-check-circle';
+        if (nombre.includes('básico')) return 'fa-circle';
+        
+        return 'fa-tools'; // Icono por defecto
+    }
+    
     // ===========================================
     // GESTIÓN DE REGISTROS DEL DÍA
     // ===========================================

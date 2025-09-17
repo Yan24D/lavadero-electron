@@ -234,29 +234,6 @@ app.get('/api/auth/profile', verifyToken, async (req, res) => {
 });
 
 // Rutas para servicios
-app.get('/api/servicios', verifyToken, async (req, res) => {
-    try {
-        const connection = await createConnection();
-        
-        const [servicios] = await connection.execute(
-            'SELECT * FROM servicios ORDER BY creado_en DESC'
-        );
-
-        await connection.end();
-
-        res.json({
-            success: true,
-            servicios
-        });
-
-    } catch (error) {
-        console.error('Error obteniendo servicios:', error);
-        res.status(500).json({ 
-            success: false, 
-            message: 'Error interno del servidor' 
-        });
-    }
-});
 
 app.post('/api/servicios', verifyToken, async (req, res) => {
     try {
@@ -469,20 +446,6 @@ app.get('/api/reportes/resumen', verifyToken, async (req, res) => {
     }
 });
 
-// Inicializar servidor
-app.listen(PORT, () => {
-    console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
-    console.log('📊 Endpoints disponibles:');
-    console.log('   POST /api/auth/login');
-    console.log('   POST /api/auth/register');
-    console.log('   GET  /api/auth/profile');
-    console.log('   GET  /api/servicios');
-    console.log('   POST /api/servicios');
-    console.log('   GET  /api/registros');
-    console.log('   POST /api/registros');
-    console.log('   PATCH /api/registros/:id/pago');
-    console.log('   GET  /api/reportes/resumen');
-});
 
 // ===== RUTAS PARA LAVADORES =====
 
@@ -1165,6 +1128,7 @@ app.get('/api/servicios/populares/:vehiculo?', verifyToken, async (req, res) => 
         const { vehiculo } = req.params;
         const connection = await createConnection();
         
+        // Obtener servicios con precios y estadísticas de uso
         let query = `
             SELECT 
                 s.id,
@@ -1172,28 +1136,30 @@ app.get('/api/servicios/populares/:vehiculo?', verifyToken, async (req, res) => 
                 s.descripcion,
                 sp.precio,
                 sp.tipo_vehiculo,
-                COALESCE(COUNT(r.id), 0) as veces_usado
+                COALESCE(stats.veces_usado, 0) as veces_usado
             FROM servicios s
             INNER JOIN servicio_precios sp ON s.id = sp.id_servicio
-            LEFT JOIN registros r ON (s.id = r.id_servicio AND r.fecha >= DATE_SUB(CURDATE(), INTERVAL 30 DAY))
+            LEFT JOIN (
+                SELECT 
+                    id_servicio, 
+                    COUNT(*) as veces_usado
+                FROM registros 
+                WHERE fecha >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
+                GROUP BY id_servicio
+            ) stats ON s.id = stats.id_servicio
             WHERE sp.activo = TRUE
         `;
         
         const params = [];
         
-        if (vehiculo) {
+        if (vehiculo && vehiculo !== 'todos') {
             query += ' AND sp.tipo_vehiculo = ?';
             params.push(vehiculo);
         }
         
-        query += `
-            GROUP BY s.id, sp.tipo_vehiculo
-            ORDER BY veces_usado DESC, sp.precio ASC
-            LIMIT 8
-        `;
+        query += ` ORDER BY veces_usado DESC, s.nombre ASC`;
         
         const [servicios] = await connection.execute(query, params);
-
         await connection.end();
 
         res.json({
