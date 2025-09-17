@@ -120,24 +120,24 @@ class SecretarioSystem {
     }
 
     async cargarServicios() {
-    try {
-        const response = await fetch(`${this.API_BASE}/servicios/populares`, {
-            headers: { 'Authorization': `Bearer ${this.user.token}` }
-        });
-        
-        const result = await response.json();
-        
-        if (result.success) {
-            this.serviciosConPrecios = result.servicios_populares;
-            this.llenarSelectServicios();
-            this.actualizarServiciosRapidos();
-            console.log('✅ Servicios cargados:', this.serviciosConPrecios.length);
+        try {
+            const response = await fetch(`${this.API_BASE}/servicios/populares`, {
+                headers: { 'Authorization': `Bearer ${this.user.token}` }
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                this.serviciosConPrecios = result.servicios_populares;
+                this.llenarSelectServicios();
+                this.actualizarServiciosRapidos();
+                console.log('✅ Servicios cargados:', this.serviciosConPrecios.length);
+            }
+        } catch (error) {
+            console.error('Error cargando servicios:', error);
+            this.mostrarNotificacion('Error cargando servicios', 'warning');
         }
-    } catch (error) {
-        console.error('Error cargando servicios:', error);
-        this.mostrarNotificacion('Error cargando servicios', 'warning');
     }
-}
 
     async cargarLavadores() {
         try {
